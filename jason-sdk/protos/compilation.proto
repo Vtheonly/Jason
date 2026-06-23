@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package jason;
+
+service ChartCompilation {
+    rpc RequestChartCompilation (CompilationRequest) returns (CompilationResponse);
+}
+
+message CompilationRequest {
+    string extraction_path = 1;
+    string chart_data_payload = 2; 
+    string theme_payload = 3;
+    string transition_payload = 4;
+}
+
+message CompilationResponse {
+    bool success = 1;
+    string message = 2;
+    repeated ErrorDetail errors = 3;
+}
+
+message ErrorDetail {
+    string code = 1;
+    string field = 2;
+    string message = 3;
+    string location = 4;
+}

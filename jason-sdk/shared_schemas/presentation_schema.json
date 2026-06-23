@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JasonPresentationConfig",
+  "type": "object",
+  "required": ["slides"],
+  "properties": {
+    "export_format": {
+      "type": "string",
+      "enum": ["pptx", "video", "pdf"],
+      "default": "pptx"
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "primary_color": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6})$" },
+        "secondary_color": {
+          "type": "string",
+          "pattern": "^#([A-Fa-f0-9]{6})$"
+        },
+        "accent_color": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6})$" },
+        "background_style": {
+          "type": "string",
+          "enum": ["solid", "gradient", "glassmorphism"]
+        },
+        "font_heading": { "type": "string" },
+        "font_body": { "type": "string" },
+        "mode": {
+          "type": "string",
+          "enum": ["light", "dark"],
+          "default": "light"
+        }
+      },
+      "additionalProperties": false
+    },
+    "transitions": {
+      "type": "object",
+      "properties": {
+        "mappings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["keyword", "morph_id"],
+            "properties": {
+              "keyword": { "type": "string" },
+              "morph_id": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "global_video_settings": {
+          "type": "object",
+          "properties": {
+            "slide_duration_seconds": { "type": "number", "minimum": 1.0 },
+            "transition_duration_seconds": { "type": "number", "minimum": 0.1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "slides": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/slide_model"
+      }
+    }
+  },
+  "definitions": {
+    "slide_model": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "slide_index": { "type": "integer", "minimum": 0 },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "layout": {
+          "type": "string",
+          "enum": [
+            "title",
+            "agenda",
+            "hero",
+            "split_screen",
+            "bento_grid",
+            "timeline",
+            "comparison",
+            "academic_results"
+          ]
+        },
+        "markdown_body": { "type": "string" },
+        "bullets": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "speaker_notes": { "type": "string" },
+        "charts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["chart_index", "chart_type", "dataset"],
+            "properties": {
+              "chart_index": { "type": "integer", "minimum": 0 },
+              "chart_type": {
+                "type": "string",
+                "enum": [
+                  "bar",
+                  "line",
+                  "pie",
+                  "radar",
+                  "waterfall",
+                  "gantt",
+                  "confusion_matrix"
+                ]
+              },
+              "dataset": {
+                "type": "array",
+                "items": {
+                  "type": "array",
+                  "items": { "type": ["string", "number"] }
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "diagrams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["diagram_type", "nodes"],
+            "properties": {
+              "diagram_type": {
+                "type": "string",
+                "enum": ["flowchart", "uml_class", "sequence", "network"]
+              },
+              "nodes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["id", "label"],
+                  "properties": {
+                    "id": { "type": "string" },
+                    "label": { "type": "string" },
+                    "type": { "type": "string" }
+                  }
+                }
+              },
+              "edges": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["from", "to"],
+                  "properties": {
+                    "from": { "type": "string" },
+                    "to": { "type": "string" },
+                    "label": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
