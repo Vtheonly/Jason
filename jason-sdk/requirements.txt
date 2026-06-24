@@ -1,0 +1,9 @@
+# Jason SDK - top-level Python dependencies.
+#
+# This file is kept for parity with the documented bare-metal setup.
+# The actual Python service dependencies live in
+# python_service/requirements.txt and that is what the Docker image
+# installs. This file simply re-exports the same list so that
+# `pip install -r requirements.txt` from the repo root still works.
+
+-r python_service/requirements.txt

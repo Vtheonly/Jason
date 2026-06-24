@@ -11,7 +11,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 import compilation_pb2
 import compilation_pb2_grpc
 from charts.chart_orchestrator import ChartOrchestrator
-from kinetic.morph_engine import apply_native_morph_pre_processing
+from kinetic_engine.morph_engine import apply_native_morph_pre_processing
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("jason-grpc-server")
@@ -61,7 +61,7 @@ class PresentationEngineServicer(compilation_pb2_grpc.ChartCompilationServicer):
 def serve():
     port = os.getenv("GRPC_PORT", "50051")
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    compilation_pb2_grpc.add_chart_compilation_servicer_to_server(PresentationEngineServicer(), server)
+    compilation_pb2_grpc.add_ChartCompilationServicer_to_server(PresentationEngineServicer(), server)
     server.add_insecure_port(f"[::]:{port}")
     logger.info(f"Python Core Engine active and listening on port: {port}")
     server.start()

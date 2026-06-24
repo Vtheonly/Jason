@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package jason.kinetic;
+
+// Reserved for future kinetic / morph transition streaming RPCs.
+// Currently the kinetic engine communicates with the Node orchestrator
+// through the ChartCompilation service defined in compilation.proto.

@@ -13,7 +13,7 @@ class ColorTranslator:
         clean_hex = hex_string.replace("#", "")
         
         if len(clean_hex) != 6:
-            logger.warn(f"Malformed hexadecimal format targeting translation: {hex_string}. Falling back to black.")
+            logger.warning(f"Malformed hexadecimal format targeting translation: {hex_string}. Falling back to black.")
             return RGBColor(0, 0, 0)
             
         try:

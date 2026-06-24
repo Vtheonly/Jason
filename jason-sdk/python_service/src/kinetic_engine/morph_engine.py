@@ -9,7 +9,7 @@ def apply_native_morph_pre_processing(extract_path, transition_manifest):
     
     slides_dir = os.path.join(extract_path, "ppt/slides")
     if not os.path.exists(slides_dir):
-        logger.warn(f"Slides path target not found for post processing: {slides_dir}")
+        logger.warning(f"Slides path target not found for post processing: {slides_dir}")
         return
 
     mappings = transition_manifest.get("mappings", [])

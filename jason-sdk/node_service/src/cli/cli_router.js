@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs-extra';
+import { fileURLToPath } from 'url';
 import { ArgsParser } from './args_parser.js';
 import { FolderScanner } from '../input_system/folder_scanner.js';
 import { ConfigMerger } from '../input_system/config_merger.js';
@@ -11,11 +12,18 @@ import { createScopedLogger } from '../developer_experience/logger.js';
 
 const log = createScopedLogger('cli-router');
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// node_service/src/cli/cli_router.js -> ../.. reaches the repo root.
+const REPO_ROOT = path.resolve(__dirname, '..', '..', '..');
+const DEFAULT_SCHEMA_PATH = path.join(REPO_ROOT, 'shared_schemas', 'presentation_schema.json');
+
 async function run() {
   const options = ArgsParser.parse(process.argv);
   const runId = `cli_${Date.now()}`;
   const extractionDir = path.join('/tmp/jason_workspace/extractions/', runId);
-  const schemaPath = path.resolve('../shared_schemas/presentation_schema.json');
+  const schemaPath = process.env.SCHEMA_PATH || DEFAULT_SCHEMA_PATH;
 
   try {
     log.info(`CLI process active. Task Reference: ${runId}`);

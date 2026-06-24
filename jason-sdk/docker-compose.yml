@@ -3,17 +3,18 @@ version: '3.8'
 services:
   jason-web:
     build:
-      context: ./node_service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: node_service/Dockerfile
     container_name: jason-web-gateway
     ports:
       - "3000:3000"
     environment:
       - PORT=3000
-      - PYTHON_SERVICE_HOST=jason-core
-      - PYTHON_SERVICE_PORT=50051
       - NODE_ENV=production
       - LOG_LEVEL=info
+      - PYTHON_SERVICE_HOST=jason-core
+      - PYTHON_SERVICE_PORT=50051
+      - JASON_WORKSPACE=/tmp/jason_workspace
     volumes:
       - jason-shared-temp:/tmp/jason_workspace
     networks:
@@ -21,11 +22,17 @@ services:
     depends_on:
       - jason-core
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
 
   jason-core:
     build:
-      context: ./python_service
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: python_service/Dockerfile
     container_name: jason-python-core
     ports:
       - "50051:50051"

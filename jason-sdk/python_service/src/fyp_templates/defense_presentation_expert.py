@@ -1,8 +1,8 @@
 import logging
 from pptx import Presentation
-from ..core_canvas.canvas_orchestrator import CanvasOrchestrator
-from ..core_canvas.master_layout_mapper import MasterLayoutMapper
-from ..theme_engine.color_translator import ColorTranslator
+from core_canvas.canvas_orchestrator import CanvasOrchestrator
+from core_canvas.master_layout_mapper import MasterLayoutMapper
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("defense-presentation-expert")
 

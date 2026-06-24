@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JasonFypProject",
+  "type": "object",
+  "properties": {
+    "project_title": { "type": "string" },
+    "candidate_name": { "type": "string" },
+    "supervisor_name": { "type": "string" },
+    "degree_program": { "type": "string" },
+    "academic_year": { "type": "string" },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": { "type": "string" },
+          "summary": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

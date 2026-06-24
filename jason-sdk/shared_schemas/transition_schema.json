@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JasonTransitions",
+  "type": "object",
+  "properties": {
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["keyword", "morph_id"],
+        "properties": {
+          "keyword": { "type": "string" },
+          "morph_id": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "global_video_settings": {
+      "type": "object",
+      "properties": {
+        "slide_duration_seconds": { "type": "number", "minimum": 1.0 },
+        "transition_duration_seconds": { "type": "number", "minimum": 0.1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

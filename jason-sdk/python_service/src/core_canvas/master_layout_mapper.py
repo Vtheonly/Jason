@@ -26,7 +26,7 @@ class MasterLayoutMapper:
                 if ph.placeholder_format.type == placeholder_type:
                     ph.text = text_content
                     return True
-            logger.warn(f"No active slide master placeholder matches type: {placeholder_type}")
+            logger.warning(f"No active slide master placeholder matches type: {placeholder_type}")
             return False
         except Exception as err:
             logger.error(f"Placeholder population failed: {str(err)}")

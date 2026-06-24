@@ -17,7 +17,7 @@ class DynamicSpacer:
             
         remaining_space = container_height_emu - total_height_emu
         if remaining_space < 0:
-            logger.warn("Vertical space collision. Content exceeds bounding coordinates. Forcing tight packing.")
+            logger.warning("Vertical space collision. Content exceeds bounding coordinates. Forcing tight packing.")
             remaining_space = 0
             
         gap = int(remaining_space / (items_count - 1))

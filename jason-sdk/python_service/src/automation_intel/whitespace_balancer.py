@@ -1,5 +1,5 @@
 import logging
-from ..core_canvas.coordinate_transformer import CoordinateTransformer
+from core_canvas.coordinate_transformer import CoordinateTransformer
 
 logger = logging.getLogger("whitespace-balancer")
 
@@ -18,7 +18,7 @@ class WhitespaceBalancer:
         available_space = canvas_height_emu - total_shapes_height
         
         if available_space < 0:
-            logger.warn("Vertical overlap detected. Shapes content height exceeds presentation dimensions.")
+            logger.warning("Vertical overlap detected. Shapes content height exceeds presentation dimensions.")
             return
 
         # Calculate balanced gap metrics between elements

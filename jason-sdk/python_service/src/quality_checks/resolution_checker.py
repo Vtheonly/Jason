@@ -21,7 +21,7 @@ class ResolutionChecker:
                 logger.info(f"Mapped image resolution coordinates: {x_dpi} DPI")
                 
                 if x_dpi < min_dpi_threshold:
-                    logger.warn(f"Image asset resolution is low: {x_dpi} DPI. Large-screen presentation may look pixelated.")
+                    logger.warning(f"Image asset resolution is low: {x_dpi} DPI. Large-screen presentation may look pixelated.")
                     return False
                     
                 return True

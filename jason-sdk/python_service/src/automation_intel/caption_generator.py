@@ -1,6 +1,6 @@
 import logging
 from pptx.util import Pt
-from ..theme_engine.color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("caption-generator")
 

@@ -23,7 +23,7 @@ class DesignRulesAuditor:
         # Check for grid alignment offsets consistency (such as left-edge alignments matches)
         unique_lefts_count = len(set(left_alignments))
         if unique_lefts_count > 4:
-            logger.warn(f"High spatial alignment offset count: {unique_lefts_count} unique left coordinates found on slide. Design may look unstructured.")
+            logger.warning(f"High spatial alignment offset count: {unique_lefts_count} unique left coordinates found on slide. Design may look unstructured.")
             return False
 
         logger.info("Slide margin grid safety checker resolved cleanly.")

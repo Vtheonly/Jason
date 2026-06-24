@@ -2,7 +2,7 @@ import logging
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from ..theme_engine.color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("check-notes-badges")
 

@@ -26,7 +26,7 @@ class OutlineExtractor:
                         if not text: continue
                         
                         # Use simple heuristics to separate heading elements from list runs
-                        if shape.name.lower().includes("title") or shape.height < 500000:
+                        if "title" in shape.name.lower() or shape.height < 500000:
                             slide_outline["title"] = text
                         else:
                             slide_outline["bullets"].extend([line.strip() for line in text.split('\n') if line.strip()])

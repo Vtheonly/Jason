@@ -5,7 +5,7 @@ import path from "path";
 import { createScopedLogger } from "../developer_experience/logger.js";
 
 const log = createScopedLogger("schema-validator");
-const ajv = new Ajv({ allErrors: true, useDefaults: true });
+const ajv = new Ajv({ allErrors: true, useDefaults: true, allowUnionTypes: true });
 addFormats(ajv);
 
 export class SchemaValidator {

@@ -1,9 +1,9 @@
 import os
 import logging
-from .excel_workbook_updater import ExcelWorkbookUpdater
-from .standard_plots import StandardPlots
-from .financial_charts import FinancialCharts
-from .academic_analytics import AcademicAnalytics
+from charts.excel_workbook_updater import ExcelWorkbookUpdater
+from charts.standard_plots import StandardPlots
+from charts.financial_charts import FinancialCharts
+from charts.academic_analytics import AcademicAnalytics
 
 logger = logging.getLogger("chart-orchestrator")
 
@@ -24,4 +24,4 @@ class ChartOrchestrator:
             logger.info(f"Synchronizing XML values caches: {chart_xml_file}")
             updater.synchronize_xml_caches(chart_xml_file, dataset)
         else:
-            logger.warn(f"Target chart XML file not found during compile step: {chart_xml_file}")
+            logger.warning(f"Target chart XML file not found during compile step: {chart_xml_file}")

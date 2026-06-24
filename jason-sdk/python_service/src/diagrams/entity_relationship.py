@@ -1,7 +1,7 @@
 import logging
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.util import Pt
-from ..theme_engine.color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("entity-relationship")
 

@@ -1,7 +1,7 @@
 import logging
 from pptx.util import Pt
 from pptx.enum.shapes import MSO_SHAPE
-from ..theme_engine.color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("financial-charts")
 

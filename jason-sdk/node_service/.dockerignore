@@ -1,0 +1,38 @@
+# Version control / metadata
+.git
+.gitignore
+.gitattributes
+
+# Local development artifacts
+node_modules
+npm-debug.log*
+.npm
+.env
+.env.local
+
+# Build / cache directories
+.cache
+coverage
+.nyc_output
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Test artifacts
+test-results
+*.tap
+
+# Documentation (not needed at runtime)
+*.md
+docs/

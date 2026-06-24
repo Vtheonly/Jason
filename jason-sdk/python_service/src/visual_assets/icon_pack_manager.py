@@ -22,5 +22,5 @@ class IconPackManager:
                 self.icon_cache[icon_keyword] = target_path
                 return target_path
 
-        logger.warn(f"Unable to locate icon matching identifier: {icon_keyword}")
+        logger.warning(f"Unable to locate icon matching identifier: {icon_keyword}")
         return None

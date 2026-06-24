@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JasonTheme",
+  "type": "object",
+  "properties": {
+    "primary_color": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6})$" },
+    "secondary_color": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6})$" },
+    "accent_color": { "type": "string", "pattern": "^#([A-Fa-f0-9]{6})$" },
+    "background_style": { "type": "string", "enum": ["solid", "gradient", "glassmorphism"] },
+    "font_heading": { "type": "string" },
+    "font_body": { "type": "string" },
+    "mode": { "type": "string", "enum": ["light", "dark"] }
+  },
+  "additionalProperties": false
+}

@@ -1,7 +1,7 @@
 import logging
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml.xmlchemy import OxmlElement
-from .color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("glassmorphism-effects")
 

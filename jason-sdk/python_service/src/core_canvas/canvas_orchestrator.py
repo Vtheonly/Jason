@@ -2,7 +2,7 @@ import os
 import logging
 from pptx import Presentation
 from pptx.util import Inches
-from .coordinate_transformer import CoordinateTransformer
+from core_canvas.coordinate_transformer import CoordinateTransformer
 
 logger = logging.getLogger("canvas-orchestrator")
 

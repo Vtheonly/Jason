@@ -1,0 +1,42 @@
+# Version control / metadata
+.git
+.gitignore
+.gitattributes
+
+# Python caches
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# Virtual environments
+venv
+.venv
+env
+
+# Local development artifacts
+.env
+.env.local
+
+# OS-specific junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+
+# Documentation (not needed at runtime)
+*.md
+docs/

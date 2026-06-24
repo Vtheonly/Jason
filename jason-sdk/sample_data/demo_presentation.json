@@ -1,0 +1,42 @@
+{
+  "export_format": "pptx",
+  "theme": {
+    "primary_color": "#003366",
+    "secondary_color": "#4682B4",
+    "accent_color": "#FFBF00",
+    "background_style": "solid",
+    "font_heading": "Arial",
+    "font_body": "Calibri",
+    "mode": "light"
+  },
+  "slides": [
+    {
+      "slide_index": 0,
+      "title": "Jason SDK Demo Presentation",
+      "subtitle": "Compiled inside Docker",
+      "layout": "title",
+      "markdown_body": "Candidate: **John Doe**  \nSupervisor: *Dr. Jane Smith*",
+      "speaker_notes": "Welcome the audience and introduce the talk."
+    },
+    {
+      "slide_index": 1,
+      "title": "Agenda",
+      "layout": "agenda",
+      "bullets": [
+        "Project Overview",
+        "System Architecture",
+        "Implementation Highlights",
+        "Validation Results",
+        "Closing Remarks"
+      ],
+      "speaker_notes": "Walk through the agenda quickly so the audience knows what to expect."
+    },
+    {
+      "slide_index": 2,
+      "title": "System Architecture",
+      "layout": "hero",
+      "markdown_body": "The platform splits work between a Node.js orchestrator and a Python drawing core, bridged over gRPC on port 50051.",
+      "speaker_notes": "Explain the dual-runtime architecture and why it was chosen."
+    }
+  ]
+}

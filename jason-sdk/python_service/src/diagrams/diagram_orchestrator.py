@@ -1,9 +1,9 @@
 import logging
-from .flowchart_blocks import FlowchartBlocks
-from .uml_class_sequence import UmlClassSequence
-from .entity_relationship import EntityRelationship
-from .dependency_network_maps import DependencyNetworkMaps
-from .pipeline_visualizers import PipelineVisualizers
+from diagrams.flowchart_blocks import FlowchartBlocks
+from diagrams.uml_class_sequence import UmlClassSequence
+from diagrams.entity_relationship import EntityRelationship
+from diagrams.dependency_network_maps import DependencyNetworkMaps
+from diagrams.pipeline_visualizers import PipelineVisualizers
 
 logger = logging.getLogger("diagram-orchestrator")
 
@@ -23,5 +23,5 @@ class DiagramOrchestrator:
         elif diagram_type == "network":
             DependencyNetworkMaps.draw_layered_network(self.slide, left_emu, top_emu, width_emu, height_emu, nodes_data, edges_data)
         else:
-            logger.warn(f"Unidentified diagram type parameter requested. Drawing flowchart fallback: {diagram_type}")
+            logger.warning(f"Unidentified diagram type parameter requested. Drawing flowchart fallback: {diagram_type}")
             FlowchartBlocks.draw_flowchart(self.slide, left_emu, top_emu, width_emu, height_emu, nodes_data, edges_data)

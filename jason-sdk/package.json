@@ -1,0 +1,12 @@
+{
+  "name": "jason-sdk",
+  "version": "1.0.0",
+  "description": "Jason SDK - dual-runtime (Node.js + Python) platform for compiling structured JSON into high-fidelity PowerPoint presentations, PDF packages, and MP4 transition videos.",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "docker-compose up --build -d",
+    "stop": "docker-compose down",
+    "logs": "docker-compose logs -f"
+  }
+}

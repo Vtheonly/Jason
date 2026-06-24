@@ -9,7 +9,7 @@ class PrintSafetyTester:
         
         # Dark slide decks use excessive printer toner, making them poor for handouts
         if bg_mode == "dark":
-            logger.warn("Presentation style set to dark mode. Printing dark slides uses high ink volumes. Consider light mode fallback prints.")
+            logger.warning("Presentation style set to dark mode. Printing dark slides uses high ink volumes. Consider light mode fallback prints.")
             return {
                 "safe": False,
                 "reason": "HIGH_INK_VOLUME_WARN",

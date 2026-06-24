@@ -1,7 +1,7 @@
 import logging
 from pptx.util import Pt, Inches
 from pptx.dml.color import RGBColor
-from ..theme_engine.color_translator import ColorTranslator
+from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("tabular-adapters")
 

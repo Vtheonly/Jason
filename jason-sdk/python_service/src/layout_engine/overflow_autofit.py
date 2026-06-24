@@ -18,7 +18,7 @@ class OverflowAutofit:
             # 2. Iteratively check density and reduce font sizes if contents overflow bounding boxes
             word_count = len(text_frame.text.split())
             if word_count > 80:
-                logger.warn("High character count detected. Reducing font sizing scale to prevent container overflows.")
+                logger.warning("High character count detected. Reducing font sizing scale to prevent container overflows.")
                 for paragraph in text_frame.paragraphs:
                     for run in paragraph.runs:
                         if run.font.size and run.font.size > Pt(10):

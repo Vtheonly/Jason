@@ -1,5 +1,5 @@
 import logging
-from ..core_canvas.coordinate_transformer import CoordinateTransformer
+from core_canvas.coordinate_transformer import CoordinateTransformer
 
 logger = logging.getLogger("bento-grid-layout")
 
