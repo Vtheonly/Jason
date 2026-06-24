@@ -18,8 +18,26 @@ export class TemplateCompiler {
       throw new Error(`Template PPTX archive missing at: ${templateFilePath}`);
     }
 
-    // 1. Decompress template archive container
-    await decompress(templateFilePath, tempExtractionPath);
+    // Validate file size to prevent zip bomb attacks (max 100MB)
+    const templateStat = await fs.stat(templateFilePath);
+    const MAX_TEMPLATE_SIZE = 100 * 1024 * 1024; // 100MB
+    if (templateStat.size > MAX_TEMPLATE_SIZE) {
+      throw new Error(`Template file exceeds maximum allowed size (${MAX_TEMPLATE_SIZE / (1024 * 1024)}MB). Possible zip bomb.`);
+    }
+
+    // 1. Decompress template archive container with size validation
+    const decompressOptions = {
+      filter: (file) => {
+        // Prevent extraction of entries larger than 500MB (zip bomb protection)
+        const MAX_ENTRY_SIZE = 500 * 1024 * 1024;
+        if (file.data && file.data.length > MAX_ENTRY_SIZE) {
+          log.warn(`Skipping oversized entry: ${file.path} (${file.data.length} bytes)`);
+          return false;
+        }
+        return true;
+      }
+    };
+    await decompress(templateFilePath, tempExtractionPath, decompressOptions);
 
     // 2. Perform Native XML morph logic mappings
     if (configPayload.transitions) {
@@ -28,6 +46,11 @@ export class TemplateCompiler {
 
     // 3. Process each slides structural design file
     const slidesDirectory = path.join(tempExtractionPath, 'ppt/slides');
+    
+    if (!(await fs.pathExists(slidesDirectory))) {
+      throw new Error(`Invalid PPTX template: 'ppt/slides' directory not found in extracted archive at ${slidesDirectory}`);
+    }
+    
     const files = await fs.readdir(slidesDirectory);
 
     for (const file of files) {

@@ -100,7 +100,7 @@ for f in __init__.py title_slide.py agenda_slide.py research_context_slides.py e
 done
 
 # python_service/src/layout_engine/
-for f in __init__.py auto_selector.js split_screen_layout.py bento_grid_layout.py timeline_layout.py comparison_layout.py dynamic_spacer.py overflow_autofit.py; do
+for f in __init__.py auto_selector.py split_screen_layout.py bento_grid_layout.py timeline_layout.py comparison_layout.py dynamic_spacer.py overflow_autofit.py; do
     create_file "python_service/src/layout_engine/$f"
 done
 
@@ -155,9 +155,8 @@ done
 create_file "node_service/src/config/constants.js"
 create_file "node_service/src/config/schema_validator.js"
 
-# python_service/src/kinetic/ (separate from kinetic_engine/)
-create_file "python_service/src/kinetic/__init__.py"
-create_file "python_service/src/kinetic/morph_engine.py"
+# python_service/src/kinetic_engine/ morph_engine is already inside kinetic_engine/
+# (The previous phantom "kinetic/" directory was a bug — removed.)
 
 echo ""
 if [ "$CREATED_ANY" -eq 1 ]; then

@@ -3,6 +3,7 @@ import multer from 'multer';
 import fs from 'fs-extra';
 import path from 'path';
 import os from 'os';
+import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 import { createScopedLogger } from './developer_experience/logger.js';
 import { FolderScanner } from './input_system/folder_scanner.js';
@@ -12,8 +13,6 @@ import { SchemaValidator } from './config/schema_validator.js';
 import { TemplateCompiler } from './template_engine/compiler.js';
 import { executeChartCompilation } from './grpc/client_orchestrator.js';
 import { OvercrowdingDetector } from './quality_control/overcrowding_detector.js';
-import { MissingAssetChecker } from './quality_control/missing_asset_checker.js';
-import { DebugPreview } from './developer_experience/debug_preview.js';
 
 const log = createScopedLogger('web-gateway');
 
@@ -31,7 +30,30 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 const WORKSPACE_ROOT = process.env.JASON_WORKSPACE || '/tmp/jason_workspace';
 
 const app = express();
-const upload = multer({ dest: path.join(os.tmpdir(), 'jason_uploads') });
+
+// Add JSON body parser with size limit to prevent DoS (10MB max)
+app.use(express.json({ limit: '10mb' }));
+
+// Add CORS headers for cross-origin API access
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
+// Multer with file size limits (100MB template, 10MB config)
+const upload = multer({
+  dest: path.join(os.tmpdir(), 'jason_uploads'),
+  limits: {
+    fileSize: 100 * 1024 * 1024,  // 100MB max per file
+    fieldSize: 10 * 1024 * 1024,   // 10MB max per field
+    files: 2                        // Max 2 files (template + config)
+  }
+});
 
 // Ensure the shared workspace exists on boot.
 await fs.ensureDir(WORKSPACE_ROOT);
@@ -68,7 +90,8 @@ app.post('/api/generate', upload.fields([
   { name: 'template', maxCount: 1 },
   { name: 'config', maxCount: 1 }
 ]), async (req, res) => {
-  const runId = `rest_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  // Use cryptographically secure UUID for run IDs to prevent collisions
+  const runId = `rest_${crypto.randomUUID()}`;
   const runWorkspace = path.join(WORKSPACE_ROOT, 'runs', runId);
   const extractionDir = path.join(runWorkspace, 'extracted');
   const outputDir = path.join(runWorkspace, 'output');
@@ -165,9 +188,11 @@ app.post('/api/generate', upload.fields([
           finalPayload.transitions || {}
         );
       } catch (grpcErr) {
-        // gRPC failure is non-fatal: we still return the compiled PPTX,
-        // but emit a warning so the caller knows chart data may be stale.
-        log.warn(`[${runId}] gRPC chart compilation failed: ${grpcErr.message}`);
+        // gRPC chart compilation is a critical step — if it fails, the PPTX
+        // will contain stale/empty chart data. Fail the entire request rather
+        // than silently returning a corrupted file.
+        log.error(`[${runId}] gRPC chart compilation failed: ${grpcErr.message}`);
+        throw new Error(`Chart compilation failed: ${grpcErr.message}. The compiled PPTX would contain invalid chart data.`);
       }
     }
 
@@ -201,11 +226,9 @@ app.post('/api/generate', upload.fields([
       });
     }
   } finally {
-    // Best-effort cleanup of the per-run workspace. We keep the output
-    // file around for download debugging if the cleanup fails.
+    // Complete cleanup of the per-run workspace, including output directory.
     try {
-      await fs.remove(path.join(WORKSPACE_ROOT, 'runs', runId, 'extracted'));
-      await fs.remove(path.join(WORKSPACE_ROOT, 'runs', runId, 'uploads'));
+      await fs.remove(runWorkspace);
     } catch (cleanupErr) {
       log.warn(`[${runId}] Workspace cleanup failed: ${cleanupErr.message}`);
     }
@@ -215,6 +238,10 @@ app.post('/api/generate', upload.fields([
 app.use((err, _req, res, _next) => {
   log.error('Unhandled Express error.', err);
   if (res.headersSent) return;
+  // Handle multer file size limit errors
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({ error: 'File too large. Maximum template size is 100MB.' });
+  }
   res.status(500).json({ error: 'Internal server error', message: err.message });
 });
 

@@ -22,7 +22,9 @@ class SlideRasterizer:
         ]
         
         try:
-            subprocess.run(cmd_pdf, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            result = subprocess.run(cmd_pdf, check=True, capture_output=True, text=True, timeout=120)
+            if result.stderr:
+                logger.info(f"LibreOffice stderr output: {result.stderr[:500]}")
         except subprocess.SubprocessError as err:
             logger.error("LibreOffice process call conversion crashed.", exc_info=True)
             raise err

@@ -49,6 +49,10 @@ ENV JASON_WORKSPACE=/tmp/jason_workspace
 
 EXPOSE 3000
 
+# Health check: verify Express is responding
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+    CMD ["wget", "-qO-", "http://localhost:3000/health"]
+
 # Express listens on PORT (default 3000). The process runs in the
 # foreground so Docker can manage its lifecycle.
 CMD ["node", "src/index.js"]

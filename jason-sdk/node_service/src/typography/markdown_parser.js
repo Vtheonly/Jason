@@ -8,7 +8,7 @@ export class MarkdownParser {
 
     log.info('Converting Markdown elements to formatted text runs.');
     const runs = [];
-    const combinedTokens = /(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|`.*?`|__.*?__|__.*?__)/g;
+    const combinedTokens = /(\*\*\*.*?\*\*\*|\*\*.*?\*\*|\*.*?\*|`.*?`|__.*?__|_.*?_)/g;
     
     let lastIndex = 0;
     let match;
@@ -50,6 +50,11 @@ export class MarkdownParser {
         runs.push({
           text: tokenValue.slice(2, -2),
           styles: { bold: true, italic: false, code: false }
+        });
+      } else if (tokenValue.startsWith('_')) {
+        runs.push({
+          text: tokenValue.slice(1, -1),
+          styles: { bold: false, italic: true, code: false }
         });
       }
 

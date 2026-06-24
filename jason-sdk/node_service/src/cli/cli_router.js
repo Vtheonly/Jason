@@ -77,7 +77,7 @@ async function run() {
 
       if (chartPayload.length > 0) {
         log.info(`Delegating raw Excel computations to Python service core for ${chartPayload.length} charts.`);
-        await executeChartCompilation(extractionDir, chartPayload);
+        await executeChartCompilation(extractionDir, chartPayload, finalPayload.theme || {}, finalPayload.transitions || {});
       }
     } else {
       log.info('Running in Debug mode. Skipping gRPC Excel compilation steps.');

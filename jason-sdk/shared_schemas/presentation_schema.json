@@ -69,6 +69,7 @@
     "slide_model": {
       "type": "object",
       "required": ["title"],
+      "additionalProperties": false,
       "properties": {
         "slide_index": { "type": "integer", "minimum": 0 },
         "title": { "type": "string" },
@@ -137,6 +138,7 @@
                 "items": {
                   "type": "object",
                   "required": ["id", "label"],
+                  "additionalProperties": false,
                   "properties": {
                     "id": { "type": "string" },
                     "label": { "type": "string" },
@@ -149,6 +151,7 @@
                 "items": {
                   "type": "object",
                   "required": ["from", "to"],
+                  "additionalProperties": false,
                   "properties": {
                     "from": { "type": "string" },
                     "to": { "type": "string" },

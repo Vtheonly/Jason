@@ -47,7 +47,9 @@ def apply_native_morph_pre_processing(extract_path, transition_manifest):
                 if keyword in name_val or keyword in descr_val:
                     morph_tag = f"!!jason_morph_{morph_id}"
                     node.set("name", morph_tag)
-                    node.set("descr", morph_tag)
+                    # Preserve original descr (alt-text) for accessibility —
+                    # append the morph tag rather than overwriting the description
+                    node.set("descr", f"{descr_val} {morph_tag}" if descr_val else morph_tag)
                     logger.info(f"Bound XML morphological tracking identifier matching keyword: {keyword}")
 
         tree.write(slide_xml_path, encoding='UTF-8', xml_declaration=True)

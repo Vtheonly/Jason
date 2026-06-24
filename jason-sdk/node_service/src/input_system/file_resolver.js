@@ -10,6 +10,28 @@ export class FileResolver {
     return this.walkAndResolve(configData, basePath, new Set());
   }
 
+  /**
+   * Validate that a resolved path stays within the allowed base directory.
+   * This prevents path traversal attacks where a malicious config could use
+   * $ref pointers like "/etc/passwd" or "../../secrets" to read arbitrary
+   * files on the host system.
+   * 
+   * @param {string} resolvedPath - The absolute path after resolution
+   * @param {string} allowedBase - The base directory that paths must stay within
+   * @throws {Error} If the path escapes the allowed directory
+   */
+  static validatePathSandbox(resolvedPath, allowedBase) {
+    const normalizedPath = path.normalize(resolvedPath);
+    const normalizedBase = path.normalize(allowedBase);
+    
+    if (!normalizedPath.startsWith(normalizedBase + path.sep) && normalizedPath !== normalizedBase) {
+      throw new Error(
+        `Security violation: Resource path "${normalizedPath}" attempts to escape sandbox "${normalizedBase}". ` +
+        `All $ref references must point to files within the workspace directory.`
+      );
+    }
+  }
+
   static async walkAndResolve(node, basePath, visitedPaths) {
     if (node === null || typeof node !== 'object') {
       return node;
@@ -26,9 +48,18 @@ export class FileResolver {
 
     // Process local reference keywords
     if (node.$ref && typeof node.$ref === 'string') {
-      const targetPath = path.isAbsolute(node.$ref)
-        ? node.$ref
-        : path.resolve(basePath, node.$ref);
+      // Reject absolute paths — they are a path traversal vector
+      if (path.isAbsolute(node.$ref)) {
+        throw new Error(
+          `Security violation: Absolute path in $ref is not allowed: "${node.$ref}". ` +
+          `Use relative paths within the workspace directory only.`
+        );
+      }
+
+      const targetPath = path.resolve(basePath, node.$ref);
+
+      // Validate that the resolved path stays within the sandbox
+      this.validatePathSandbox(targetPath, basePath);
 
       log.info(`Resolving sub-schema reference file: ${targetPath}`);
 

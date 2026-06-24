@@ -1,6 +1,7 @@
 import logging
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml.xmlchemy import OxmlElement
+from pptx.util import Pt
 from theme_engine.color_translator import ColorTranslator
 
 logger = logging.getLogger("glassmorphism-effects")
@@ -42,7 +43,7 @@ class GlassmorphismEffects:
 
             # Configure ultra-thin glass-border outline properties
             card_shape.line.color.rgb = ColorTranslator.hex_to_rgb("#FFFFFF")
-            card_shape.line.width = ColorTranslator.hex_to_rgb("#FFFFFF") # Base mapping standard thickness
+            card_shape.line.width = Pt(0.75)  # Ultra-thin glass border (0.75pt)
             
             # Assign shadow depth elements
             spPr_xml = card_shape._element.spPr

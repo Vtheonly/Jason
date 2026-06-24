@@ -62,7 +62,9 @@ export async function applyNativeMorphEngine(extractionPath, transitionsManifest
         if (nameVal.includes(keyword) || descrVal.includes(keyword)) {
           const morphTag = `!!jason_morph_${morphId}`;
           node.setAttribute('name', morphTag);
-          node.setAttribute('descr', morphTag);
+          // Preserve original descr (alt-text) for accessibility — only append
+          // the morph tag, don't overwrite the description
+          node.setAttribute('descr', descrVal ? `${descrVal} ${morphTag}` : morphTag);
           modified = true;
           log.info(`Tagged shape in ${slideFile} with morph id: ${morphId}`);
         }

@@ -46,6 +46,20 @@ RUN cd python_service \
 # Ensure the shared workspace exists.
 RUN mkdir -p /tmp/jason_workspace
 
+# Create a simple gRPC health check script
+RUN cat > /app/healthcheck.py << 'EOF'
+import sys
+import grpc
+try:
+    channel = grpc.insecure_channel('localhost:50051')
+    grpc.channel_ready_future(channel).result(timeout=5)
+    print("OK")
+    sys.exit(0)
+except Exception as e:
+    print(f"FAIL: {e}")
+    sys.exit(1)
+EOF
+
 WORKDIR /app/python_service
 
 ENV GRPC_PORT=50051
@@ -53,5 +67,9 @@ ENV LOG_LEVEL=INFO
 ENV PYTHONUNBUFFERED=1
 
 EXPOSE 50051
+
+# Health check: verify gRPC server is responding
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD ["python", "/app/healthcheck.py"]
 
 CMD ["python", "server.py"]

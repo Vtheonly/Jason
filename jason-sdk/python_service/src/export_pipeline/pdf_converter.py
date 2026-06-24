@@ -20,7 +20,9 @@ class PdfConverter:
         ]
 
         try:
-            subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            result = subprocess.run(cmd, check=True, capture_output=True, text=True, timeout=120)
+            if result.stderr:
+                logger.info(f"LibreOffice stderr output: {result.stderr[:500]}")
             logger.info("LibreOffice PDF conversion completed successfully.")
             
             # Retrieve PDF path from working folder
